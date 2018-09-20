@@ -9,9 +9,11 @@ jQuery( document ).ready(function() {
 	jQuery('#publish').bind('click', mbds_save);
 	jQuery('#_mbds_type').bind('click', mbds_type_change);
 	jQuery('#_mbds_posts_name').bind('click', mbds_posts_name_change);
+	jQuery('#_mbds_include_copyright').bind('click', mbds_copyright_change);
 	
 	mbds_type_change();
 	mbds_posts_name_change();
+	mbds_copyright_change();
 	
 	// make the grid sortable
 	jQuery('#mbds_post_grid').sortable({
@@ -41,6 +43,16 @@ function mbds_posts_name_change() {
 	} else {
 		jQuery('.cmb2-id--mbds-custom-posts-name-single').hide();
 		jQuery('.cmb2-id--mbds-custom-posts-name-plural').hide();
+	}
+}
+
+//jmihalik customization - show or hide the copyright author field based
+//on the checkbox
+function mbds_copyright_change() {
+	if (jQuery('#_mbds_include_copyright').is(':checked')) {
+		jQuery('.cmb2-id--mbds-copyright-author').show();
+	} else {
+		jQuery('.cmb2-id--mbds-copyright-author').hide();
 	}
 }
 

@@ -182,46 +182,58 @@ function mbds_get_stories($filter, $complete, $series, $genre) {
 						
 }
 
-function mbds_get_posts_list( $storyID ) {
+//jmihalik customization add flag to allow private posts (for admin page in story.php)
+function mbds_get_posts_list( $storyID, $include_private = false ) {
 	
 	//$mbdbps_series = get_option('mbdbps_series');
 	$posts_list = get_post_meta($storyID, '_mbds_posts', true);
 	
-	if ($posts_list == '') {
+	//jmihalik fix for empty array
+	if ( $posts_list == '' || empty($posts_list) ) {
 		return apply_filters('mbds_posts_list', array());
 	}
-		
+	
+	if ( $include_private ) {
+		$status = array('publish', 'private');
+	}else {
+		$status = 'publish';
+	}
+
+	//jmihalik customization to add orderby	
 	$args = array(
 				'posts_per_page' => -1,
-				'post_status'	=> 'publish',
+				'post_status'	=> $status,
+				'orderby' => 'post__in',
 				'post__in' => $posts_list);
 	
 	$posts = get_posts( $args ); 
 	
-	
-	foreach ($posts as $post) {
-	
-		$key = array_search($post->ID, $posts_list);
-		if ($key !== false) {
+	//jmihalik remove array search and create new array without private posts, add status
+	if ( $posts ) { 
+
+		foreach ($posts as $key=>$post) {
+		
 			$alt_title = get_post_meta( $post->ID, '_mbds_alt_chapter_title', true );
 			if ( $alt_title != '' ) {
 				$title = $alt_title;
 			} else {
 				$title = $post->post_title;
 			}
-			$posts_list[$key] = array('ID' => $post->ID,
+
+			$post_list[$key] = array('ID' => $post->ID,
 									'title' => $title,
 									'link'	=> get_permalink($post->ID),
-									'order'	=> $key);
+									'order' => $key,
+									'status' => $post->post_status);
 		}
-
-
-
+		
+		wp_reset_postdata();
+	}else {
+		return apply_filters('mbds_posts_list', array());
 	}
-	
-	wp_reset_postdata();
-	
-	return apply_filters('mbds_posts_list', $posts_list);
+
+	//jmihalik return new array that won't have private posts
+	return apply_filters('mbds_posts_list', $post_list);
 
 }
 

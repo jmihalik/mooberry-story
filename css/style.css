@@ -1,5 +1,83 @@
-.mbs_next, .mbs_prev {
-	width: 35%;	
+/* jmihalik new */
+.mbs_post_link_top {
+	padding-bottom: .5rem;
+	margin-bottom: .5rem;
+	border-bottom: 1px solid #eee;
+	font-size: 14px;
+	font-size: 0.875rem;
+	text-align: right;
+	color: #888;
+}
+
+.mbs_post_link_top a {
+	color: #888;
+}
+
+.mbs_post_list_link_top {
+	padding: .25rem 0px;
+	margin-bottom: .5rem;
+	border-bottom: 1px dotted #eee;
+	border-top: 1px dotted #eee;
+	font-size: 12px;
+	font-size: 0.75rem;
+	text-align: right;
+	color: #888;
+}
+
+.mbs_post_list_link_top a {
+	color: #888;
+}
+
+.mbs_post_list_link_top p {
+	margin-bottom: 0px;
+}
+
+.mbs_post_list_link_top hr {
+	background-color: #fff;
+	margin: 0;
+	border: 0;
+}
+
+/* jmihalik customization */
+ul.mbs_toc_list {
+	list-style: decimal;
+	margin-left: 35px;
+	margin-bottom: .5em;
+}
+/*ul.mbs_toc_list {
+	list-style: decimal inside;
+	margin-bottom: .5em;
+}*/
+
+.mbs_toc_title {
+	text-transform: uppercase;
+	font-weight: 700;
+}
+
+.mbs_nav_title {
+	font-weight: 700;
+}
+
+.mbs_copyright_notice {
+	color: #767676;
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	padding: .5rem 0;
+	font-size: 12px;
+	font-size: 0.75rem;
+	font-weight: 800;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	text-align: center;
+	margin-bottom: 1.5em;
+	font-family: "Helvetica Neue", helvetica, arial, sans-serif;
+}
+/* end new */
+
+/* jmihalik customization */
+.mbs_next, 
+.mbs_prev {
+	width: 48%;	
 }
 
 .mbs_next {
@@ -12,28 +90,38 @@
 	text-align: left;
 }
 
+/* jmihalik customization */
 .mbs_toc_link {
-	width: 20%;
-	margin: 0% 5%;
+	text-align: center;
+	margin-bottom: 1rem;
 }
 
 .mbs_posts_text {
 	margin: 5% 0%;
 }
 
-.mbs_cover_image, .mbs_toc {
-	width: 50%; 
-	margin-left:auto; margin-right:auto; display:block;
-	margin-bottom: 20px;
+/* jmihalik customization */
+.mbs_cover_image {
+	float: left;
+	margin-right: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+
+/* jmihalik customization */
+.mbs_toc,
+.mbs_nav_box {
+	font-family: "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
 .mbs_posts_widget_list  li{
 	list-style: decimal inside;
 }
 
+/* jmihalik customization
 .mbs_story_widget_list li {
-	list-style: circle inside;
+	
 }
+*/
 
 .mbs_posts_title {
 	text-align: center;

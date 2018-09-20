@@ -1,9 +1,53 @@
-.postbox-container .cmb-row {
-	padding: 0;
+/* jmihalik new - fixes some admin page formatting */
+.cmb2-wrap {
+	font-size: 13px;
 }
 
+.cmb2-wrap select {
+	margin-top: 0px;
+}
+
+#_mbds_story_meta_box .cmb2-wrap input[type=checkbox],
+#mbds_display .cmb2-wrap input[type=checkbox] {
+	margin-top: 5px;
+}
+
+.ui-state-default a.mbds_post_grid_link,
+.ui-state-default a.mbds_post_grid_link:link,
+.ui-state-default a.mbds_post_grid_link:visited {
+	color: #0073aa;
+	text-decoration: underline;
+}
+
+.ui-state-default a.mbds_post_grid_link:hover {
+	color: #00a0d2;
+}
+
+/* Fix Book Manager overrides */
+#_mbds_story_meta_box .cmb-td input,
+#cmb2-metabox-_mbds_post_meta_box .cmb-td input,
+#mbds_display .cmb-td input {
+	float: none;
+}
+
+#_mbds_story_meta_box .cmb-td p.cmb2-metabox-description,
+#mbds_display .cmb-td p.cmb2-metabox-description {
+	color: #aaa;
+	font-style: italic;
+}
+/* end Book Manager */
+/* end new */
+
+/*jmihalik customization - add padding, set margin */
+.postbox-container .cmb-row {
+	padding: .5em 0;
+	margin: 0;
+}
+
+/*jmihalik customization - add padding, set margin */
 .postbox-container .cmb2-wrap>.cmb-field-list>.cmb-row {
-	padding: 0;
+	padding: .5em 0;
+	margin: 0;
 }
 
 #cmb2-metabox-_mbds_story_meta_box  .cmb-th, #cmb2-metabox-mbds_display  .cmb-th  {
@@ -14,6 +58,8 @@
 	width: 67%;
 }
 
-#mbds_post_grid { list-style-type: none; margin: 10px; padding: 0; width: 60%; }
+/*jmihalik customization remove width from post list in story admin page */
+#mbds_post_grid { list-style-type: none; margin: 10px; padding: 0; }
+
 #mbds_post_grid li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; cursor: pointer; cursor: hand;}
 #mbds_post_grid li span { position: absolute; margin-left: -1.3em; }
