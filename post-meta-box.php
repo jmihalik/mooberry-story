@@ -79,20 +79,21 @@ function mbds_story_save($override, $a, $args, $field_obj ) {
 	$stories = mbds_get_stories('all', null, null, null);
 	foreach($stories as $each_story) {
 		$story = mbds_get_story($each_story->ID);
-		
-		if (array_key_exists('_mbds_posts', $story)) {
+		//jmihalik customization - check for empty story
+		if ( !empty($story) && array_key_exists('_mbds_posts', $story) ) {
 			// if the ID is in the array, get the key
 			$keys = array_keys($story['_mbds_posts'], $post->ID);
-			
-			foreach ($keys as $key) {
-				// remove the post
-				unset($story['_mbds_posts'][$key]);
+			if ( !empty($keys) ) {
+				foreach ($keys as $key) {
+					// remove the post
+					unset($story['_mbds_posts'][$key]);
+				}
+				// renumber the indices
+				$story['_mbds_posts'] = array_values($story['_mbds_posts']);
+				
+				// update the story
+				update_post_meta($each_story->ID, '_mbds_posts', $story['_mbds_posts']);
 			}
-			// renumber the indices
-			$story['_mbds_posts'] = array_values($story['_mbds_posts']);
-			
-			// update the story
-			update_post_meta($each_story->ID, '_mbds_posts', $story['_mbds_posts']);
 		}
 	}
 	

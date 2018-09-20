@@ -2,7 +2,7 @@
 /*
 Plugin Name: Mooberry Story
 Plugin URI:  http://www.mooberrydreams.com/products/mooberry-story
-Description: Organizes multiple blog posts into a series. Make it easy for readers to find your stories, including older ones.
+Description: Organizes multiple blog posts into a series. Make it easy for readers to find your stories, including older ones. CUSTOM: DO NOT UPDATE!!!
 Version:     1.3
 Author:      Mooberry Dreams
 Author URI:  https://profiles.wordpress.org/mooberrydreams/
@@ -29,7 +29,7 @@ along with Mooberry Story. If not, see https://www.gnu.org/licenses/gpl-2.0.html
 define('MBDS_PLUGIN_DIR', plugin_dir_path( __FILE__ )); 
 
 define('MBDS_PLUGIN_VERSION_KEY', 'mbds_version');
-define('MBDS_PLUGIN_VERSION', '1.3');
+define('MBDS_PLUGIN_VERSION', '1.3'); 
 
 
 //update checker
@@ -69,8 +69,13 @@ function mbds_plugins_loaded() {
 	load_plugin_textdomain( 'mooberry-story', FALSE, basename( MBDS_PLUGIN_DIR ) . '/languages/' );
 }
 
-add_action( 'admin_head', 'mbds_register_admin_styles' );	 
-function mbds_register_admin_styles() {
+/* jmihalik customization - change from admin_head to admin_enqueue_scripts */
+add_action( 'admin_enqueue_scripts', 'mbds_register_admin_styles' );	 
+function mbds_register_admin_styles($hook) {
+	// Load only on edit pages and post pages
+	if( $hook != 'edit.php' && $hook != 'post.php' && $hook != 'post-new.php' ) {
+		return;
+	}
 	wp_register_style( 'mbds-admin-styles', plugins_url( 'css/admin-style.css', __FILE__)  );
 	wp_enqueue_style( 'mbds-admin-styles' );
 	wp_enqueue_style('mbds-jquery-ui-css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css');
@@ -110,7 +115,7 @@ function mbds_init() {
 			'show_in_nav_menus' => true,
 			'has_archive' => false,
 			'hierarchical' => false,
-			'rewrite' => array( 'slug' => 'story' ),
+			'rewrite' => array( 'slug' => 'story', 'with_front' => false ),  //jmihalik customization to remove /blog url
 			'query_var' => true,
 			'supports' => array( 'title', 'comments' ),
 			'taxonomies' => array( 'mbds_genre', 'mbds_series' ),
@@ -215,8 +220,28 @@ function mbds_register_story_widget() {
 	register_widget('mbds_Posts_Widget');
 }
 
+//jmihalik customization - added a body class to make it easier to template/css
+add_filter( 'body_class', 'mbds_body_class' ); 
+function mbds_body_class( $classes ) {
+    global $post;
 
-add_filter( 'the_content', 'mbds_content');
+    $storyID = get_post_meta($post->ID, '_mbds_story', true);
+	if ($storyID != '') {
+
+	    if( is_single() && get_post_type() == 'post' ) {
+	        $classes[] = 'mbds-story-post';
+	    }
+	}elseif ( is_single() && get_post_type() == 'mbds_story' ) {
+	    	$classes[] = 'mbds-story-page';
+	    }
+
+    return $classes;
+}
+
+
+
+//jmihalik customization - moved earlier so it will wptexturize automatically
+add_filter( 'the_content', 'mbds_content', 9);
 function mbds_content($content) {
 	global $post;
 	
@@ -227,7 +252,28 @@ function mbds_content($content) {
 			return $content;
 		}
 		
+		// jmihalik customization to add the story link to posts on 
+		// the main blog page, archive pages, and the RSS feed
 		if (!is_single()) {
+			
+			// Limit to main blog page, archive pages, and RSS feed
+			if ( !is_archive() && !is_home() && !is_feed() ) {
+				return $content;
+			}
+
+			// If it's a post that is part of a story, add a story link
+			if ( get_post_type() == 'post' && is_main_query() && !is_admin() ) {
+		
+				$storyID = get_post_meta($post->ID, '_mbds_story', true);
+				if ($storyID != '') {
+					$story_text = $content;
+					$mbds_story = mbds_get_story($storyID);
+					$content = '';
+					$content .= '<div class="mbs_post_list_link_top"><p>Part of the serial story ' . '[mbs_storyname_link]' . '</p><hr/></div>';
+					$content .= $story_text;
+				}
+			}
+
 			return $content;
 		}
 	
@@ -249,17 +295,26 @@ function mbds_content($content) {
 			$story_text = $content;
 			$content = '';
 			$mbds_story = mbds_get_story($storyID);
-			if ( $toc_top ) {
-				$content .= '[mbs_toc_link]';
+			//jmihalik customization - top formatting
+			$content .= '[mbs_story_top_link]';
+			if ( $toc_top || $prev_top || $next_top ) {
+				$content .= '<fieldset class="mbs_nav_box"><legend class="mbs_nav_title">';
+				$content .= $mbds_story['title'];
+				$content .= ' Navigation</legend>';
+				if ( $toc_top ) {
+					$content .= '<div class="mbs_toc_link">' . '[mbs_toc_link]' . '</div>';
+				}
+				if ( $prev_top ) {
+					$content .= '[mbs_prev]';
+				}
+				if ( $next_top) {
+					$content .= '[mbs_next]';
+				}
+				$content .= '</fieldset>';
 			}
-			if ( $prev_top ) {
-				$content .= '[mbs_prev]';
-			}
-			if ( $next_top) {
-				$content .= '[mbs_next]';
-			}
-			$content .= '<br style="clear:both;">';
-			$content .= '<h2 class="mbs_posts_title">';
+
+			//jmihalik customization to remove title at the top
+			/*$content .= '<h2 class="mbs_posts_title">';
 			
 			if (isset($mbds_story['_mbds_include_posts_name'])) {
 				 $content .= mbds_display_posts_name($mbds_story, $post->ID) . '<br>';
@@ -273,17 +328,27 @@ function mbds_content($content) {
 			}
 
 			$content .= $title . '</h2>';
+			*/
 			$content .= '<div class="mbs_posts_text">' . $story_text . '</div>';
-			if ( $toc_bottom ) {
-				$content .= '[mbs_toc_link]';
+			
+			//jmihalik customization add copyright and bottom formatting fieldset
+			$content .= '[mbs_copyright_notice]';
+			if ( $toc_bottom || $next_bottom || $prev_bottom ) {
+				$content .= '<fieldset class="mbs_nav_box"><legend class="mbs_nav_title">';
+				$content .= $mbds_story['title'];
+				$content .= ' Navigation</legend>';
+				if ( $toc_bottom ) {
+					$content .= '<div class="mbs_toc_link">' . '[mbs_toc_link]' . '</div>';
+				}
+				if ( $prev_bottom ) {
+					$content .= '[mbs_prev]';
+				}
+				if ( $next_bottom) {
+					$content .= '[mbs_next]';
+				}
+				$content .= '</fieldset>';
 			}
-			if ( $prev_bottom ) {
-				$content .= '[mbs_prev]';
-			}
-			if ( $next_bottom) {
-				$content .= '[mbs_next]';
-			}
-			$content .= '<br style="clear:both;">';
+			//end customization
 		}
 	}
 	
@@ -296,15 +361,18 @@ function mbds_content($content) {
 		$content = '[mbs_cover story="' . $slug . '"]';
 		
 		$content .= '[mbs_summary story="' . $slug . '"]';
-
+		
 		$content .= '[mbs_toc story="' . $slug . '"]';
+
+		//jmihalik customization TODO: Add genre and series links
 	}
 	return apply_filters('mbds_content', $content);
 
 }
 
 // see https://joshlevinson.me/2013/08/14/filter-a-page-posts-title-only-on-that-page-post/
-add_action('loop_start','mbds_condition_filter_title');
+// jmihalik customization removed so the story title won't prepend to the post title on display
+/*add_action('loop_start','mbds_condition_filter_title');
 function mbds_condition_filter_title($query){
 	global $wp_query;
 	// tc_title_text for theme Customizr
@@ -315,7 +383,7 @@ function mbds_condition_filter_title($query){
 		remove_filter('the_title','mbds_posts_title', 10);
 		remove_filter('tc_title_text', 'mbds_posts_title', 10);
 	}
-}
+}*/
 
 //add_filter('tc_title_text', 'mbdb_tax_grid_title');
 //add_filter( 'the_title', 'mbds_posts_title', 10, 2);

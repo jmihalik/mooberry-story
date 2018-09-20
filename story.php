@@ -13,9 +13,9 @@ function mbds_init_story_meta_box() {
 	$prefix = '_mbds_';
 
 	$yes_no =  array(
-								'yes'   =>  __('Yes', 'mooberry-story'),
-								'no' =>  __('No', 'mooberry-story'),
-		);
+		'yes'   =>  __('Yes', 'mooberry-story'),
+		'no' =>  __('No', 'mooberry-story'),
+	);
 
 	$story_meta_box = new_cmb2_box( apply_filters('mbds_story_meta_box', array(
 		'id'            => $prefix . 'story_meta_box',
@@ -44,8 +44,8 @@ function mbds_init_story_meta_box() {
 		'id'         => $prefix . 'custom_type',
 		'type'       => 'text',
 	) ) );
-
-
+	
+	
 	$story_meta_box->add_field( apply_filters( 'mbds_story_open_story_field', array(
 		'name'      =>  __('Can other users add to this story?', 'mooberry-story'),
 		'id'        =>  $prefix . 'open_story',
@@ -84,13 +84,13 @@ function mbds_init_story_meta_box() {
 		'type'		=> 'checkbox',
 		'desc'		=> 'Will prepend, for example, Chapter X: to the title of the post. If you just name your posts "Chapter 1", etc. don\'t check this.',
 	) ) );
-	
+
 	$story_meta_box->add_field( apply_filters('mbds_story_complete_field', array(
 		'name'       => __( 'Story Is Complete?', 'mooberry-story' ),
 		'id'         => $prefix . 'complete',
 		'type'       => 'checkbox',
 	) ) );
-	
+
 	$story_meta_box->add_field( apply_filters('mbds_story_summary_field', array(
 		'name'       => __( 'Story Summary', 'mooberry-story' ),
 		'id'         => $prefix . 'summary',
@@ -98,7 +98,7 @@ function mbds_init_story_meta_box() {
 		'options'	=>	array(
 				'wpautop' => true, // use wpautop?
 				'media_buttons' => false, // show insert/upload button(s)
-				'textarea_rows' => 5,
+				'textarea_rows' => 15, //jmihalik customization up from 5
 				'dfw' => false, // replace the default fullscreen with DFW (needs specific css)
 				'tinymce' => true, // load TinyMCE, can be used to pass settings directly to TinyMCE using an array()
 				'teeny' => true,
@@ -131,6 +131,39 @@ function mbds_init_story_meta_box() {
 		'show_names'    => true, // Show field names on the left
 	)));
 
+	//jmihalik customization - Add an option to show a top link to story posts
+	$story_display_meta_box->add_field( apply_filters('mbds_story_include_include_story_top_link_field', array(
+		'name'		=> __('Include Story Top Link?', 'mooberry-story'),
+		'id'		=> $prefix . 'include_story_top_link',
+		'type'		=> 'checkbox',
+		'desc'		=> 'Add a "Part of the serial story &lt;TITLE LINK&gt;" to the top of story posts.',
+	) ) );
+	
+	//jmihalik customization - Add an option to show copyright text at the end of posts.
+	$story_display_meta_box->add_field( apply_filters('mbds_story_include_copyright_field', array(
+		'name'		=> __('Include Copyright Notice?', 'mooberry-story'),
+		'id'		=> $prefix . 'include_copyright',
+		'type'		=> 'checkbox',
+		'desc'		=> 'Add a copyright notice at the end of each story post.',
+	) ) );
+
+	$story_display_meta_box->add_field( apply_filters('mbds_story_copyright_author_field', array(
+		'name'       => __( 'Copyright Author', 'mooberry-story' ),
+		'id'         => $prefix . 'copyright_author',
+		'type'       => 'text',
+		'desc'		 => 'Leave blank to attribute the copyright to the post author\'s display name (as set in Users).',
+	) ) );
+	
+	//jmihalik customization - Add an option to remove title prefix
+	/*$story_display_meta_box->add_field( apply_filters('mbds_story_remove_story_title_field', array(
+		'name'		=> __('Remove Title Text from Prev/Next links?', 'mooberry-story'),
+		'id'		=> $prefix . 'remove_story_title',
+		'type'		=> 'checkbox',
+		'desc'		=> 'Remove the story title from the post names in the navigation and TOC. Useful when post names always start with the title, e.g. "Title: Chapter 1" will display as "Chapter 1".',
+	) ) );
+	*/
+	//end custom
+	
 	$story_display_meta_box->add_field( apply_filters('mbds_story_prev_top', array(
 		'name'  =>  __('Show Previous Chapter Link on top of page?', 'mooberry-story' ),
 		'id'    =>  '_mbds_prev_top',
@@ -188,10 +221,19 @@ function mbds_posts_meta_box() {
 	echo '<p>' . __('Drag and drop the items to reorder them.', 'mooberry-story') . '</p>';
 	echo '	<ul id="mbds_post_grid">';
 	
-	$posts = mbds_get_posts_list($post->ID);
+	//jmihalik customization include private posts, add status to the name, make them links to edit posts
+	$posts = mbds_get_posts_list($post->ID, true);
 	foreach ($posts as $one_post) {
-		echo '<li id="mbds_post_' . $one_post['ID'] . '" class="ui-state-default"><span class="ui-icon"></span>' . $one_post['title'] . '</li>';
+		echo '<li id="mbds_post_' . $one_post['ID'] . '" class="ui-state-default"><span class="ui-icon"></span>';
+		echo '<a href="' . get_edit_post_link ($one_post['ID']) . '" class="mbds_post_grid_link">';
+		if ( $one_post['status'] != 'publish') {
+			echo ucfirst($one_post['status']) . ': ' . $one_post['title'];
+		}else {
+			echo $one_post['title'];
+		}
+		echo '</a></li>';
 	}
+	//end customization
 	
 	echo '</ul>';
 }

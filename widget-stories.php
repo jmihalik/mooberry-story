@@ -45,10 +45,14 @@ class mbds_Story_Widget extends WP_Widget {
 		return $instance;
 	}
 	 
+	//jmihalik customization = change echos to $html_output so the whole thing can be texturized for curly quotes
 	function widget( $args, $instance ) {
+		global $wp_query, $post;
+
 		extract( $args );
-		echo $before_widget;        
-		echo $before_title . esc_html($instance['mbds_sw_title']) . $after_title; 
+		$html_output = '';
+		$html_output .= $before_widget;        
+		$html_output .= $before_title . strip_tags($instance['mbds_sw_title']) . $after_title; 
 	
 		// get list of stories
 		switch ($instance['mbds_sw_stories']) {
@@ -72,17 +76,38 @@ class mbds_Story_Widget extends WP_Widget {
 				break;
 		}
 		if ($stories != null) {
-			echo '<ul class="mbs_story_widget_list">';
+			$html_output .= '<ul class="mbs_story_widget_list">';
 			foreach ($stories as $story) {
-				echo '<li><a href="' . get_the_permalink($story->ID) . '">' . $story->post_title . '</a></li>';
+				$html_output .= '<li><a href="' . get_the_permalink($story->ID) . '">' . $story->post_title . '</a></li>';
 			}
-			echo '</ul>';
+			$html_output .= '</ul>';
 		} else {
-			echo '<span class="mbs_story_widget_none">';
-			echo __('No stories found', 'mooberry-story');
-			echo '</span>';
+			$html_output .= '<span class="mbs_story_widget_none">';
+			$html_output .= __('No stories found', 'mooberry-story');
+			$html_output .= '</span>';
 		}
-		echo $after_widget;
+
+
+		if ( ( $wp_query->is_single ) && $series = get_post_meta($post->ID, '_mbds_story', true) ) {
+			$posts = mbds_get_posts_list($series);
+			if ($posts != null) {
+				$selected_story = mbds_get_story($series);
+				$html_output .= '<h2 class="widget-title" style="padding-top: 3rem;">' . $selected_story['title'];
+				$html_output .= ' ' . mbds_get_story_post_name($selected_story['ID'], 'plural') . '</h2>';
+				$html_output .= '<ul class="mbs_posts_widget_list">';
+			
+				foreach ($posts as $post) {
+					//jmihalik customization - remove story name from link title
+					$html_output .= '<li><a href="' . $post['link'] . '">';
+					$html_output .= str_replace($selected_story['title'] . ':', '', $post['title']);
+					$html_output .= '</a></li>';
+				}
+				$html_output .= '</ul>';
+			} 
+		}
+
+		$html_output .= $after_widget;
+		echo wptexturize($html_output);
 		 
 	} 
 }
