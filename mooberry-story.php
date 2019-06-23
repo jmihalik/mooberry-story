@@ -2,7 +2,7 @@
 /*
 Plugin Name: Mooberry Story
 Plugin URI:  http://www.mooberrydreams.com/products/mooberry-story
-Description: Organizes multiple blog posts into a series. Make it easy for readers to find your stories, including older ones. CUSTOM: DO NOT UPDATE!!!
+Description: Custom fork of the Mooberry Story plugin. Organizes multiple blog posts into a series. Make it easy for readers to find your stories, including older ones.
 Version:     1.4
 Author:      Mooberry Dreams
 Author URI:  https://profiles.wordpress.org/mooberrydreams/
@@ -38,8 +38,9 @@ require 'includes/plugin-update-checker/plugin-update-checker.php';
     'http://www.mooberrydreams.com/plugins/2c49afcc-e4a0-403b-a980-c755043a201e/updater.json',
     __FILE__
 );*/
+/* jmihalik customization - change update location to the GitHub fork */
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-		'http://www.mooberrydreams.com/plugins/2c49afcc-e4a0-403b-a980-c755043a201e/updater.json',
+		'https://github.com/jmihalik/mooberry-story',
 		__FILE__ //Full path to the main plugin file or functions.php.
 
 	);

@@ -1,16 +1,18 @@
 === Mooberry Story ===
-Contributors: mooberrydreams
+Contributors: mooberrydreams, jmiha
 Donate link: http://www.mooberrydreams.com/products/mooberry-story
 Tags: author, authors, writer, writers, story, creative writing, fiction, serial, book
 Requires at least: 3.8.0
-Tested up to: 4.4
-Stable tag: 1.2.2
+Tested up to: 5.2.2
+Stable tag: 1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Organize multiple posts into a story. Make it easy for readers to find your stories, including older ones.
+Custom fork of Mooberry Story. Organize multiple posts into a story. Make it easy for readers to find your stories, including older ones.
 
 == Description ==
+
+This is a custom fork of the [Mooberry Story plugin by Mooberry Dreams](http://www.mooberrydreams.com/products/mooberry-story) that addresses a few bugs and makes some aesthetic changes. You should probably be using the [main plugin](https://github.com/christiespeich/mooberry-story).
 
 Mooberry Story helps you post an ongoing story to your blog by grouping the posts into a single story. Display a table of contents, re-arrange the order of the posts within the story, and draw attention to your story with sidebar widgets.
 
@@ -40,6 +42,18 @@ If you have stories you've already posted on your blog, you can still use Moober
 6. Two widgets and multiple options allow you to highlight stories on your sidebar so readers can find them easily.
 
 == Changelog ==
+= 1.4 =
+* Changed the auto-update location to be this custom fork rather than the main project
+* Pulled in upstream changes: Update plugin update checker to be php 7 compatible
+
+= 1.3 =
+* Added: Can use an alternative title for chapters
+* Added: Stories can be added by author only or everyone
+* Added: Ability to show or hide the TOC, Next, and/or Prev links on top and/or bottom
+
+= 1.2.3 =
+* Fixed translation issues
+
 = 1.2.2 =
 * Fixes errors using the_title in a custom WP_Query
 
