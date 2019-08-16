@@ -4,7 +4,7 @@ Donate link: http://www.mooberrydreams.com/products/mooberry-story
 Tags: author, authors, writer, writers, story, creative writing, fiction, serial, book
 Requires at least: 3.8.0
 Tested up to: 5.2.2
-Stable tag: 1.4
+Stable tag: 1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,10 @@ If you have stories you've already posted on your blog, you can still use Moober
 6. Two widgets and multiple options allow you to highlight stories on your sidebar so readers can find them easily.
 
 == Changelog ==
+= 1.5 =
+* Added the ability to set footer text for story posts, along with the option to show it or not
+* Updated cmb2 and plugin-update-checker to the newest versions
+
 = 1.4 =
 * Changed the auto-update location to be this custom fork rather than the main project
 * Pulled in upstream changes: Update plugin update checker to be php 7 compatible

@@ -12,6 +12,7 @@ add_shortcode( 'mbs_copyright_notice', 'mbds_shortcode_copyright_notice');
 add_shortcode( 'mbs_cover_link', 'mbds_shortcode_cover_link');
 add_shortcode( 'mbs_stories_list', 'mbds_shortcode_stories_list' );
 add_shortcode( 'mbs_story_top_link', 'mbds_shortcode_story_top_link' );
+add_shortcode( 'mbs_story_footer', 'mbds_shortcode_story_footer' );
 
 
 function mbds_get_storyID($story) {
@@ -106,7 +107,8 @@ function mbds_shortcode_summary($attr, $content) {
 
 	$html_output = '<div class="mbs_story_summary">';
 	if (isset($mbds_story['_mbds_summary'])) {
-		$html_output .= '<p>' .  preg_replace('/\\n/', '</p><p>',$mbds_story['_mbds_summary']) . '</p>';
+		//jmihalik customization - Use wpautop rather than search/replace
+		$html_output .= wpautop($mbds_story['_mbds_summary']);
 	}
 	$html_output .= '</div>';
 		
@@ -237,5 +239,21 @@ function mbds_shortcode_story_top_link( $attr, $content) {
 	}
 
 	return apply_filters('mbds_story_top_link_shortcode', wptexturize($html_output));
+}
+
+function mbds_shortcode_story_footer( $attr, $content) {
+	$attr = shortcode_atts(array('story' => ''), $attr);
+	$storyID = mbds_get_storyID($attr['story']);
+	$mbds_story = mbds_get_story($storyID);
+	$html_output = '';
+	if (isset($mbds_story['_mbds_include_story_footer'])) {
+		$html_output .= '<div class="mbs_story_footer"><div class="mbs_story_footer_top_border"></div>';
+		if ($footer_content = $mbds_story['_mbds_story_footer']) {
+			$html_output .= wpautop($footer_content);
+		}
+		$html_output .= '</div>';
+	}
+
+	return apply_filters('mbds_story_footer_shortcode', wptexturize($html_output));
 }
 //end customization

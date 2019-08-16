@@ -72,6 +72,19 @@ ul.mbs_toc_list {
 	margin-bottom: 1.5em;
 	font-family: "Helvetica Neue", helvetica, arial, sans-serif;
 }
+
+.mbs_story_footer {
+	padding: .5rem 0;
+	display: inline-block;
+	width: 100%;
+}
+
+.mbs_story_footer_top_border {
+	border-top: 1px solid #eee;
+	width: 50%;
+	margin: auto;
+	padding-top: .5rem;
+}
 /* end new */
 
 /* jmihalik customization */

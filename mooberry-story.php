@@ -3,7 +3,7 @@
 Plugin Name: Mooberry Story
 Plugin URI:  http://www.mooberrydreams.com/products/mooberry-story
 Description: Custom fork of the Mooberry Story plugin. Organizes multiple blog posts into a series. Make it easy for readers to find your stories, including older ones.
-Version:     1.4
+Version:     1.5
 Author:      Mooberry Dreams
 Author URI:  https://profiles.wordpress.org/mooberrydreams/
 License:     GPL2
@@ -29,7 +29,7 @@ along with Mooberry Story. If not, see https://www.gnu.org/licenses/gpl-2.0.html
 define('MBDS_PLUGIN_DIR', plugin_dir_path( __FILE__ )); 
 
 define('MBDS_PLUGIN_VERSION_KEY', 'mbds_version');
-define('MBDS_PLUGIN_VERSION', '1.4');
+define('MBDS_PLUGIN_VERSION', '1.5');
 
 
 //update checker
@@ -337,7 +337,8 @@ function mbds_content($content) {
 			*/
 			$content .= '<div class="mbs_posts_text">' . $story_text . '</div>';
 			
-			//jmihalik customization add copyright and bottom formatting fieldset
+			//jmihalik customization add footer, copyright, and bottom formatting fieldset
+			$content .= '[mbs_story_footer]';
 			$content .= '[mbs_copyright_notice]';
 			if ( $toc_bottom || $next_bottom || $prev_bottom ) {
 				$content .= '<fieldset class="mbs_nav_box"><legend class="mbs_nav_title">';
