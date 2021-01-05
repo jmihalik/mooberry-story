@@ -1,19 +1,21 @@
 jQuery( document ).ready(function() {
-	
+
 	// this is only for saving stories not other posts
 	if (jQuery('#_mbds_story_meta_box').length == 0) {
 		return;
 	}
-	
+
 	// bind a function to save the grid order via ajax
-	jQuery('#publish').bind('click', mbds_save);
-	jQuery('#_mbds_type').bind('click', mbds_type_change);
-	jQuery('#_mbds_posts_name').bind('click', mbds_posts_name_change);
-	jQuery('#_mbds_include_copyright').bind('click', mbds_copyright_change);
+	jQuery('#publish').on('click', mbds_save);
+	jQuery('#_mbds_type').on('click', mbds_type_change);
+	jQuery('#_mbds_posts_name').on('click', mbds_posts_name_change);
+	jQuery('#_mbds_include_copyright').on('click', mbds_copyright_change); //jmihalik custom
+	jQuery('#_mbds_include_metadata').on('click', mbds_metadata_change); //jmihalik custom
 	
 	mbds_type_change();
 	mbds_posts_name_change();
-	mbds_copyright_change();
+	mbds_copyright_change(); //jmihalik custom
+	mbds_metadata_change(); //jmihalik custom
 	
 	// make the grid sortable
 	jQuery('#mbds_post_grid').sortable({
@@ -56,16 +58,26 @@ function mbds_copyright_change() {
 	}
 }
 
+//jmihalik customization - show or hide the include metadata word count field based
+//on the show metadata checkbox
+function mbds_metadata_change() {
+	if (jQuery('#_mbds_include_metadata').is(':checked')) {
+		jQuery('.cmb2-id--mbds-show-metadata-wc').show();
+	} else {
+		jQuery('.cmb2-id--mbds-show-metadata-wc').hide();
+	}
+}
+
 // update the icons in the grid
 function mbds_post_grid_update() {
 	// remove all the classes and add ui-icon on all of the items in the grid
 	jQuery('#mbds_post_grid li span').removeClass().addClass('ui-icon');
 	// add a down arrow to the first item
-	jQuery('#mbds_post_grid li:first span').addClass('ui-icon-arrowthick-1-s');
+	jQuery('#mbds_post_grid li').first().children('span').addClass('ui-icon-arrowthick-1-s');
 	// add an up arrow to the last item
-	jQuery('#mbds_post_grid li:last span').addClass('ui-icon-arrowthick-1-n');
+	jQuery('#mbds_post_grid li').last().children('span').addClass('ui-icon-arrowthick-1-n');
 	// add an up and down arrow to any non-first and non-last item
-	jQuery('#mbds_post_grid li').not(':first').not(':last').children('span').addClass('ui-icon-arrowthick-2-n-s');
+	jQuery('#mbds_post_grid li').not(jQuery('#mbds_post_grid li').first().not(jQuery('#mbds_post_grid li').last())).children('span').addClass('ui-icon-arrowthick-2-n-s');
 }
 
 // save the sorted grid via ajax
@@ -78,10 +90,9 @@ function mbds_save() {
 	};
 	jQuery.post(ajax_object.ajax_url, data, mbds_after_save);
 }
-    
+
 // function that's called after the save grid ajax
 // not really anything to do...
 function mbds_after_save() {
-	
+
 }
-	

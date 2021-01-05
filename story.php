@@ -138,9 +138,45 @@ function mbds_init_story_meta_box() {
 			'allow' => array(  'attachment' ) // limit to just attachments with array( 'attachment' )
 	)));
 	
+	//jmihalik customization - New box for story page settings
+	$story_display_meta_box = new_cmb2_box( apply_filters('mbds_story_page_display_meta_box', array(
+		'id'            => 'mbds_page_display',
+		'title'         => __('Story Page Display Settings',  'mooberry-story' ),
+		'object_types'  => array( 'mbds_story', ), // Post type
+		'context'       => 'normal',
+		'priority'      => 'high',
+		'show_names'    => true, // Show field names on the left
+	)));
+
+	//jmihalik customization - Show or hide metadata on main story page
+	$story_display_meta_box->add_field( apply_filters( 'mbds_story_include_metadata', array(
+		'name'  =>  __( 'Include Metadata on story page?', 'mooberry-story' ),
+		'id'    =>  $prefix . 'include_metadata',
+		'type'		=> 'checkbox',
+		'desc'		 => 'Show genre, series, completed status, and total word count on the main story page.',
+		)));
+	
+	//jmihalik customization - Show or hide word count in the metadata on the main story page
+	$story_display_meta_box->add_field( apply_filters( 'mbds_story_show_metadata_wc', array(
+		'name'  =>  __( 'Show the Total Word Count in the metadata?', 'mooberry-story' ),
+		'id'    =>  $prefix . 'show_metadata_wc',
+		'type'  =>  'select',
+		'options'    =>  $yes_no,
+		'desc'		 => 'Show the story\'s total word count in the metadata section of the main story page.',
+		)));
+
+	//jmihalik customization - Show or hide word count per post on main story page
+	$story_display_meta_box->add_field( apply_filters( 'mbds_story_show_wordcount', array(
+		'name'  =>  __( 'Show Word Count for each post on story page?', 'mooberry-story' ),
+		'id'    =>  $prefix . 'show_wordcount',
+		'type'  =>  'select',
+		'options'    =>  $yes_no,
+		'desc'		 => 'Show the word count for each post in the Table of Contents on the main story page.',
+		)));	
+	
 	$story_display_meta_box = new_cmb2_box( apply_filters('mbds_story_display_meta_box', array(
 		'id'            => 'mbds_display',
-		'title'         => __('Story Display Settings',  'mooberry-story' ),
+		'title'         => __('Story Post Display Settings',  'mooberry-story' ),
 		'object_types'  => array( 'mbds_story', ), // Post type
 		'context'       => 'normal',
 		'priority'      => 'high',
@@ -186,6 +222,7 @@ function mbds_init_story_meta_box() {
 		'desc'		=> 'Remove the story title from the post names in the navigation and TOC. Useful when post names always start with the title, e.g. "Title: Chapter 1" will display as "Chapter 1".',
 	) ) );
 	*/
+
 	//end custom
 	
 	$story_display_meta_box->add_field( apply_filters('mbds_story_prev_top', array(

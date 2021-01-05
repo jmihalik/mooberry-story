@@ -8,7 +8,8 @@
 }
 
 #_mbds_story_meta_box .cmb2-wrap input[type=checkbox],
-#mbds_display .cmb2-wrap input[type=checkbox] {
+#mbds_display .cmb2-wrap input[type=checkbox],
+#mbds_page_display .cmb2-wrap input[type=checkbox] {
 	margin-top: 5px;
 }
 
@@ -26,13 +27,15 @@
 /* Fix Book Manager overrides */
 #_mbds_story_meta_box .cmb-td input,
 #cmb2-metabox-_mbds_post_meta_box .cmb-td input,
-#mbds_display .cmb-td input {
+#mbds_display .cmb-td input,
+#mbds_page_display .cmb-td input {
 	float: none;
 }
 
 #_mbds_story_meta_box .cmb-td p.cmb2-metabox-description,
-#mbds_display .cmb-td p.cmb2-metabox-description {
-	color: #aaa;
+#mbds_display .cmb-td p.cmb2-metabox-description,
+#mbds_page_display .cmb-td p.cmb2-metabox-description {
+	color: #757575;
 	font-style: italic;
 }
 /* end Book Manager */
@@ -50,11 +53,15 @@
 	margin: 0;
 }
 
-#cmb2-metabox-_mbds_story_meta_box  .cmb-th, #cmb2-metabox-mbds_display  .cmb-th  {
+#cmb2-metabox-_mbds_story_meta_box  .cmb-th,
+#cmb2-metabox-mbds_display  .cmb-th,
+#cmb2-metabox-mbds_page_display  .cmb-th  {
 	width: 30%;
 }
 
-#cmb2-metabox-_mbds_story_meta_box .cmb-th+.cmb-td, #cmb2-metabox-mbds_display .cmb-th+.cmb-td  {
+#cmb2-metabox-_mbds_story_meta_box .cmb-th+.cmb-td, 
+#cmb2-metabox-mbds_display .cmb-th+.cmb-td,
+#cmb2-metabox-mbds_page_display .cmb-th+.cmb-td  {
 	width: 67%;
 }
 
