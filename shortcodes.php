@@ -252,6 +252,7 @@ function mbds_shortcode_copyright_notice( $attr, $content ) {
 
 function mbds_shortcode_stories_list( $attr, $content ) {
 	$stories = mbds_get_stories( 'all', null, null, null );
+	$html_output = '';
 	if ( $stories != null ) {
 		$html_output .= '<ul class="mbs_stories_list">';
 		foreach ( $stories as $story ) {

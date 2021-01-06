@@ -99,13 +99,14 @@ function mbds_get_stories( $filter, $complete, $series, $genre ) {
 	//$meta_query = array();
 	//$tax_query = array();
 
-	$args = array(
+	//jmihalik customization - add the ability to override the args with filters
+	$args = apply_filters( 'mbds_stories_list_args', array(
 		'post_type'      => 'mbds_story',
 		'posts_per_page' => - 1,
 		'post_status'    => 'publish',
 		'order'          => 'ASC',
 		'orderby'        => 'title',
-	);
+	) );
 
 
 	if ( $filter == 'recent' ) {
