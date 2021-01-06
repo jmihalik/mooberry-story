@@ -105,22 +105,6 @@ function mbds_init_story_meta_box() {
 				'quicktags' => true // load Quicktags, can be used to pass settings directly to Quicktags using an array()
 			),
 	) ) );
-
-	//jmihalik customization - Add option to append some footer text at the end of every story part
-	$story_meta_box->add_field( apply_filters('mbds_story_footer_field', array(
-		'name'       => __( 'Story Footer', 'mooberry-story' ),
-		'id'         => $prefix . 'story_footer',
-		'type'       => 'wysiwyg',
-		'options'	=>	array(
-				'wpautop' => true, // use wpautop?
-				'media_buttons' => true, // show insert/upload button(s)
-				'textarea_rows' => 10, //jmihalik customization up from 5
-				'dfw' => false, // replace the default fullscreen with DFW (needs specific css)
-				'tinymce' => true, // load TinyMCE, can be used to pass settings directly to TinyMCE using an array()
-				'teeny' => true,
-				'quicktags' => true // load Quicktags, can be used to pass settings directly to Quicktags using an array()
-			),
-	) ) );
 	
 	$cover_image_meta_box = new_cmb2_box( apply_filters('mbds_story_cover_image_meta_box', array(
 		'id'            => 'mbds_cover_image',
@@ -197,6 +181,22 @@ function mbds_init_story_meta_box() {
 		'id'		=> $prefix . 'include_story_footer',
 		'type'		=> 'checkbox',
 		'desc'		=> 'Append the footer to the bottom of story posts.',
+	) ) );
+	
+	//jmihalik customization - Add option to append some footer text at the end of every story part
+	$story_display_meta_box->add_field( apply_filters('mbds_story_footer_field', array(
+		'name'       => __( 'Story Footer', 'mooberry-story' ),
+		'id'         => $prefix . 'story_footer',
+		'type'       => 'wysiwyg',
+		'options'	=>	array(
+				'wpautop' => true, // use wpautop?
+				'media_buttons' => true, // show insert/upload button(s)
+				'textarea_rows' => 10, //jmihalik customization up from 5
+				'dfw' => false, // replace the default fullscreen with DFW (needs specific css)
+				'tinymce' => true, // load TinyMCE, can be used to pass settings directly to TinyMCE using an array()
+				'teeny' => true,
+				'quicktags' => true // load Quicktags, can be used to pass settings directly to Quicktags using an array()
+			),
 	) ) );
 	
 	//jmihalik customization - Add an option to show copyright text at the end of posts.

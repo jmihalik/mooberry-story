@@ -11,11 +11,13 @@ jQuery( document ).ready(function() {
 	jQuery('#_mbds_posts_name').on('click', mbds_posts_name_change);
 	jQuery('#_mbds_include_copyright').on('click', mbds_copyright_change); //jmihalik custom
 	jQuery('#_mbds_include_metadata').on('click', mbds_metadata_change); //jmihalik custom
+	jQuery('#_mbds_include_story_footer').on('click', mbds_include_footer_change); //jmihalik custom
 	
 	mbds_type_change();
 	mbds_posts_name_change();
 	mbds_copyright_change(); //jmihalik custom
 	mbds_metadata_change(); //jmihalik custom
+	mbds_include_footer_change(); //jmihalik custom
 	
 	// make the grid sortable
 	jQuery('#mbds_post_grid').sortable({
@@ -65,6 +67,16 @@ function mbds_metadata_change() {
 		jQuery('.cmb2-id--mbds-show-metadata-wc').show();
 	} else {
 		jQuery('.cmb2-id--mbds-show-metadata-wc').hide();
+	}
+}
+
+//jmihalik customization - show or hide the footer wysiwyg editor based
+//on the include footer checkbox
+function mbds_include_footer_change() {
+	if (jQuery('#_mbds_include_story_footer').is(':checked')) {
+		jQuery('.cmb2-id--mbds-story-footer').show();
+	} else {
+		jQuery('.cmb2-id--mbds-story-footer').hide();
 	}
 }
 

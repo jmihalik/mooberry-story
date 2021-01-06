@@ -288,10 +288,11 @@ function mbds_content( $content ) {
 			$slug = $post->post_name;
 			//If there's no cover, include the summary instead.
 			if ( isset( $mbds_story['_mbds_cover'] ) ) {
-				$content = '[mbs_cover story="' . $slug . '"]';
+				$html_output = '<a href="' . $mbds_story['link'] . '">' .'[mbs_cover story="' . $slug . '"]' . '</a>';
 			} else {
-				$content = '[mbs_summary story="' . $slug . '"]';
+				$html_output = '[mbs_summary story="' . $slug . '"]';
 			}
+			$content = $html_output . $content;
 		}
 		return $content;
 	}
@@ -383,8 +384,6 @@ function mbds_content( $content ) {
 		$content .= '[mbs_summary story="' . $slug . '"]';
 		
 		$content .= '[mbs_toc story="' . $slug . '"]';
-
-		//jmihalik customization TODO: Add genre and series links
 	}
 
 	return apply_filters( 'mbds_content', $content );
