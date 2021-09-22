@@ -114,6 +114,7 @@ function mbds_shortcode_summary( $attr, $content ) {
 		//jmihalik customization - Use wpautop rather than search/replace
 		$html_output .= wpautop( $mbds_story['_mbds_summary'] );
 	}
+	$html_output .= get_post_field('post_content', $storyID );
 	$html_output .= '</div>';
 		
 	//jmihalik customization - curly quotes
@@ -164,11 +165,11 @@ function mbds_shortcode_toc( $attr, $content ) {
 	if ( $include_metadata ) {
 		$html_output .= '<div class="mbs_meta">';
 		//$series = get_the_terms( $storyID, 'mbds_series');
-		if ( is_array( $mbds_story['series'] ) && count( $mbds_story['series'] ) > 0 ) {
+		if ( isset( $mbds_story['series'] ) && is_array( $mbds_story['series'] ) && count( $mbds_story['series'] ) > 0 ) {
 			$html_output .= '<div class="mbs_meta_series"><span class="mbs_meta_label mbs_meta_series_label">' . __( 'Series:', 'mooberry-story' ) . '</span> <span class="mbs_meta_value mbs_meta_series">' . get_the_term_list( $storyID, 'mbds_series', '', ', ' ) . '</span></div>';
 		}
 		//$genres = get_the_terms( $storyID, 'mbds_genre');
-		if ( is_array( $mbds_story['genres'] ) && count( $mbds_story['genres'] ) > 0 ) {
+		if ( isset( $mbds_story['genres'] ) && is_array( $mbds_story['genres'] ) && count( $mbds_story['genres'] ) > 0 ) {
 			$html_output .= '<div class="mbs_meta_genre"><span class="mbs_meta_label mbs_meta_genre_label">' . _n( 'Genre:', 'Genres:', count( $mbds_story['genres'] ), 'mooberry-story' ) . '</span> <span class="mbs_meta_value mbs_meta_genre">' . get_the_term_list( $storyID, 'mbds_genre', '', ', ' ) . '</div>';
 		}
 		$complete    = isset( $mbds_story['_mbds_complete'] ) ? __('Yes', 'mooberry-story') : __('No', 'mooberry-story');
