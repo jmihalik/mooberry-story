@@ -241,15 +241,17 @@ add_filter( 'body_class', 'mbds_body_class' );
 function mbds_body_class( $classes ) {
     global $post;
 
-    $storyID = get_post_meta($post->ID, '_mbds_story', true);
-	if ($storyID != '') {
+	if ( is_single() ) {
+		$storyID = get_post_meta($post->ID, '_mbds_story', true);
+		if ($storyID != '') {
 
-	    if( is_single() && get_post_type() == 'post' ) {
-	        $classes[] = 'mbds-story-post';
-	    }
-	}elseif ( is_single() && get_post_type() == 'mbds_story' ) {
-	    	$classes[] = 'mbds-story-page';
-	    }
+			if( get_post_type() == 'post' ) {
+				$classes[] = 'mbds-story-post';
+			}
+		}elseif ( get_post_type() == 'mbds_story' ) {
+				$classes[] = 'mbds-story-page';
+			}
+	}
 
     return $classes;
 }
