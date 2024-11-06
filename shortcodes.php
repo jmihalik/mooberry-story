@@ -128,7 +128,12 @@ function mbds_shortcode_cover( $attr, $content ) {
 	$mbds_story  = mbds_get_story( $storyID );
 	$html_output = '';
 	if ( isset( $mbds_story['_mbds_cover'] ) ) {
-		$html_output = '<img class="mbs_cover_image" src="' . $mbds_story['_mbds_cover'] . '">';
+		//jmihalik customization - alt tag
+		$alt = get_post_meta( $mbds_story['_mbds_cover_id'], '_wp_attachment_image_alt', true );
+		if ( $alt == '' ) {
+			$alt = $mbds_story['title'] . ' Cover';
+		}
+		$html_output = '<img class="mbs_cover_image" src="' . esc_url( $mbds_story['_mbds_cover'] ) . '" alt="' . esc_attr( $alt ) . '">';
 	}
 
 	return apply_filters( 'mbds_cover_shortcode', $html_output );
@@ -252,16 +257,33 @@ function mbds_shortcode_copyright_notice( $attr, $content ) {
 }
 
 function mbds_shortcode_stories_list( $attr, $content ) {
-	$stories = mbds_get_stories( 'all', null, null, null );
+	//jmihalik customization - Break stories into current and archived lists
+	$current_stories = mbds_get_stories( 'current', null, null, null );
 	$html_output = '';
-	if ( $stories != null ) {
+	$found = 0;
+	if ( $current_stories != null ) {
+		$html_output .= 'Current Stories:';
 		$html_output .= '<ul class="mbs_stories_list">';
-		foreach ( $stories as $story ) {
+		foreach ( $current_stories as $story ) {
 			$html_output .= '<li><a href="' . get_the_permalink( $story->ID ) . '">' . $story->post_title . '</a></li>';
 		}
 		$html_output .= '</ul>';
-	} else {
-		$html_output .= '<span class="mbs_stories_list_none">';
+		$found = 1;
+	}
+
+	$archived_stories = mbds_get_stories( 'archived', null, null, null );
+	if ( $archived_stories != null ) {
+		$html_output .= 'Archived Stories:';
+		$html_output .= '<ul class="mbs_stories_list">';
+		foreach ( $archived_stories as $story ) {
+			$html_output .= '<li><a href="' . get_the_permalink( $story->ID ) . '">' . $story->post_title . '</a></li>';
+		}
+		$html_output .= '</ul>';
+		$found = 1;
+	}
+	
+	if (! $found ) {
+		$html_output .= '<span class="mbs_stories_list_none" style="display:inline-block; margin-bottom:1.5em;">';
 		$html_output .= __( 'No stories found', 'mooberry-story' );
 		$html_output .= '</span>';
 	}

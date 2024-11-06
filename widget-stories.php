@@ -55,9 +55,16 @@ class mbds_Story_Widget extends WP_Widget {
 		$html_output .= $before_title . strip_tags($instance['mbds_sw_title']) . $after_title; 
 	
 		// get list of stories
+		// jmihalik customization - add current and archived story options
 		switch ($instance['mbds_sw_stories']) {
 			case 'all':
 				$stories = mbds_get_stories('all', null, null, null);
+				break;
+			case 'current':
+				$stories = mbds_get_stories('current', null, null, null);
+				break;
+			case 'archived':
+				$stories = mbds_get_stories('archived', null, null, null);
 				break;
 			case 'complete':
 				$stories = mbds_get_stories('all', 'complete', null, null);

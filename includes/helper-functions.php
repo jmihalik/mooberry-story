@@ -134,7 +134,24 @@ function mbds_get_stories( $filter, $complete, $series, $genre ) {
 		} else {
 			return null;  // nothing to return
 		}
+	}else if ( $filter == 'current' ) { //jmihalik
+		$meta_query[] = array(
+			'key'     => '_mbds_archive_story',
+			'compare' => 'NOT EXISTS',
+		);
+	}else if ( $filter == 'archived' ) { //jmihalik
+		$meta_query[] = array(
+			'key'     => '_mbds_archive_story',
+			'value'   => 'on',
+			'compare' => '=',
+		);
 	}
+
+	//jmihalik customization - Only return stories that don't have the hidden flag set
+	$meta_query[] = array(
+		'key'     => '_mbds_hide_story',
+		'compare' => 'NOT EXISTS',
+	);
 
 
 	if ( $complete == 'complete' ) {
@@ -369,6 +386,8 @@ function mbds_output_dropdown( $options, $selected ) {
 function mbds_get_story_widget_dropdown( $selected ) {
 	$options = array(
 		'all'        => __( 'All Stories', 'mooberry-story' ),
+		'current'    => __( 'Current Stories', 'mooberry-story' ),
+		'archived'   => __( 'Archived Stories', 'mooberry-story' ),
 		'complete'   => __( 'Completed Stories', 'mooberry-story' ),
 		'incomplete' => __( 'Unfinished Stories', 'mooberry-story' ),
 		'recent'     => __( 'Last Updated Story', 'mooberry-story' ),

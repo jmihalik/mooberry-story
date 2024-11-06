@@ -1,3 +1,7 @@
+/* jmihalik Nov 2024 - Fix Safari 18 issue */
+#postbox-container-2 { clear: left; }
+.index-php #postbox-container-2 { clear: none; }
+
 /* jmihalik new - fixes some admin page formatting */
 .cmb2-wrap {
 	font-size: 13px;

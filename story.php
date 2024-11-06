@@ -122,6 +122,33 @@ function mbds_init_story_meta_box() {
 			'allow' => array(  'attachment' ) // limit to just attachments with array( 'attachment' )
 	)));
 	
+	//jmihalik customization - New box for story visibility
+	$story_visibility_meta_box = new_cmb2_box( apply_filters('mbds_story_visibility_meta_box', array(
+		'id'            => 'mbds_story_visibility',
+		'title'         => __('Story List Visibility Settings',  'mooberry-story' ),
+		'object_types'  => array( 'mbds_story', ), // Post type
+		'context'       => 'normal',
+		'priority'      => 'high',
+		'show_names'    => true, // Show field names on the left
+	)));
+
+	//jmihalik customization - Allow stories to be hidden from the story list
+	$story_visibility_meta_box->add_field( apply_filters('mbds_story_complete_field', array(
+		'name'       => __( 'Remove story?', 'mooberry-story' ),
+		'id'         => $prefix . 'hide_story',
+		'type'       => 'checkbox',
+		'desc'		=> __('Will remove this story from public story lists (widgets, shortcodes, etc). Story will still show in admin story lists. Story page will still be public and available via direct link.', 'mooberry-story'),
+	) ) );
+
+	//jmihalik customization - Allow stories to archived
+	$story_visibility_meta_box->add_field( apply_filters('mbds_story_complete_field', array(
+		'name'       => __( 'Archive story?', 'mooberry-story' ),
+		'id'         => $prefix . 'archive_story',
+		'type'       => 'checkbox',
+		'desc'		=> __('Will move this story to the archived section of the story list. Story page will still be public.', 'mooberry-story'),
+	) ) );
+
+
 	//jmihalik customization - New box for story page settings
 	$story_display_meta_box = new_cmb2_box( apply_filters('mbds_story_page_display_meta_box', array(
 		'id'            => 'mbds_page_display',
