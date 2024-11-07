@@ -15,6 +15,7 @@ function mbds_update_versions() {
 		mbds_upgrade_to_1_3();
 	}
 
+
 		update_option(MBDS_PLUGIN_VERSION_KEY, MBDS_PLUGIN_VERSION);
 
 }

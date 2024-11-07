@@ -219,35 +219,32 @@ function mbds_get_stories( $filter, $complete, $series, $genre ) {
 }
 
 //jmihalik customization add flag to allow private posts (for admin page in story.php)
-function mbds_get_posts_list( $storyID, $include_private = false ) {
+function mbds_get_posts_list( $storyID, $args = array() ) {
 	
 	//$mbdbps_series = get_option( 'mbdbps_series' );
-	$posts_list = get_post_meta( $storyID, '_mbds_posts', true );
+	$posts_ids = get_post_meta( $storyID, '_mbds_posts', true );
 	
 	//jmihalik fix for empty array
-	if ( $posts_list == '' || empty( $posts_list ) ) {
+	if ( $posts_ids == '' || empty( $posts_ids ) ) {
 		return apply_filters( 'mbds_posts_list', array() );
 	}
 	
-	if ( $include_private ) {
-		$status = array( 'publish', 'private' );
-	}else {
-		$status = 'publish';
-	}
-
 	//jmihalik customization to add orderby	
-	$args = array(
+	$default_args = array(
 				'posts_per_page' => -1,
-				'post_status'	 => $status,
+				'post_status'	 => 'publish',
 				'orderby'        => 'post__in',
-				'post__in'       => $posts_list
+				'post__in'       => $posts_ids
 			);
+	
+	$args = wp_parse_args($args, $default_args);
 	
 	$posts = get_posts( $args ); 
 	
 	//jmihalik remove array search and create new array without private posts, add status
 	if ( $posts ) { 
 
+		$posts_list = array();
 		foreach ( $posts as $key=>$post ) {
 		
 			$alt_title = get_post_meta( $post->ID, '_mbds_alt_chapter_title', true );
@@ -257,7 +254,7 @@ function mbds_get_posts_list( $storyID, $include_private = false ) {
 				$title = $post->post_title;
 			}
 
-			$post_list[ $key ] = array('ID'  => $post->ID,
+			$posts_list[ $key ] = array('ID'  => $post->ID,
 									'title'  => $title,
 									'link'	 => get_permalink( $post->ID ),
 									'order'  => $key,
@@ -271,7 +268,7 @@ function mbds_get_posts_list( $storyID, $include_private = false ) {
 	}
 
 	//jmihalik return new array that won't have private posts
-	return apply_filters( 'mbds_posts_list', $post_list );
+	return apply_filters( 'mbds_posts_list', $posts_list );
 
 }
 
@@ -362,12 +359,17 @@ function mbds_get_story_post_name( $storyID, $single_plural ) {
 
 }
 
-function mbds_display_posts_name( $story, $postID ) {
-	$posts_name = mbds_get_story_post_name( $story['ID'], 'single' );
-	$count      = array_search( $postID, $story['_mbds_posts'] );
-	$count ++;
-
-	return apply_filters( 'mbds_display_posts_name', $posts_name . ' ' . $count );
+function mbds_display_posts_name( $story, $postID, $include_colon = false ) {
+	$posts_name = '';
+	$exclude = get_post_meta($postID, '_mbds_exclude_posts_name', true);
+	if ( $exclude != 'on' ) {
+		$posts_name = mbds_get_story_post_name( $story['ID'], 'single' );
+		$count      = array_search( $postID, $story['_mbds_posts'] );
+		$count ++;
+		$posts_name .= ' ' . $count;
+		$posts_name .= $include_colon ? ':' : '';
+	}
+	return apply_filters( 'mbds_display_posts_name', $posts_name );
 }
 
 function mbds_output_dropdown( $options, $selected ) {

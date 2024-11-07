@@ -310,7 +310,7 @@ function mbds_posts_meta_box() {
 	echo '	<ul id="mbds_post_grid">';
 	
 	//jmihalik customization include private posts, add status to the name, make them links to edit posts
-	$posts = mbds_get_posts_list($post->ID, true);
+	$posts = mbds_get_posts_list($post->ID, array('post_status'=>array('publish','future','private')));
 	foreach ($posts as $one_post) {
 		echo '<li id="mbds_post_' . $one_post['ID'] . '" class="ui-state-default"><span class="ui-icon"></span>';
 		echo '<a href="' . get_edit_post_link ($one_post['ID']) . '" class="mbds_post_grid_link">';
@@ -362,11 +362,14 @@ function mbds_save_posts_grid() {
 
 		// $_POST['posts']  = "mbds_post[]=2131&mbds_post[]=2135&mbds_post[]=2133&mbds_post[]=2243&mbds_post[]=2245&mbds_post[]=2247&mbds_post[]=2249&mbds_post[]=2251&mbds_post[]=2253&mbds_post[]=2255&mbds_post[]=2257&mbds_post[]=2259"
 
-		// parse_str($_POST['posts']) creates variable $mbds_post which is an array of post ids
-		parse_str($_POST['posts']);
 
-		update_post_meta($_POST['storyID'], '_mbds_posts', $mbds_post);
+		parse_str($_POST['posts'], $mbds_post);
+
+		// $mbds_post = [ 'mbds_post' => [ '2131', '2135', ....] ]
+
+		update_post_meta($_POST['storyID'], '_mbds_posts', $mbds_post['mbds_post']);
 	}
+	wp_die();
 
 }
 

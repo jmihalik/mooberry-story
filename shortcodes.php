@@ -72,7 +72,7 @@ function mbds_next_prev( $nextprev, $text, $story, $summary ) {
 		if ( $found !== null ) {
 			$html_output .= '<div class="mbs_' . $nextprev . '">' . $text . ': <a href="' . $posts[ $found ]['link'] . '">';
 			if ( isset( $mbds_story['_mbds_include_posts_name'] ) ) {
-				$html_output .= '<span class="mbs_' . $nextprev . '_posts_name">' . mbds_display_posts_name( $mbds_story, $posts[ $found ]['ID'] ) . ': </span>';
+				$html_output .= '<span class="mbs_' . $nextprev . '_posts_name">' . mbds_display_posts_name( $mbds_story, $posts[ $found ]['ID'], true ) . ' </span>';
 			}
 			//jmihalik customization - remove story name from next/prev link
 			$html_output .= str_replace( $mbds_story['title'] . ':', '', $posts[ $found ]['title'] ) . '</a>';
@@ -193,12 +193,12 @@ function mbds_shortcode_toc( $attr, $content ) {
 	foreach ( $posts as $each_post ) {
 		$alt_title = get_post_meta( $each_post['ID'], '_mbds_alt_chapter_title', true );
 		if ( $alt_title != '' ) {
-			$post['title'] = $alt_title;
+			$each_post['title'] = $alt_title;
 		}
 		
 		$html_output .= '<li><a href="' . $each_post['link'] . '">';
 		if ( isset( $mbds_story['_mbds_include_posts_name'] ) ) {
-			$html_output .= '<span class="mbs_toc_item_posts_name">' . mbds_display_posts_name( $mbds_story, $each_post['ID'] ) . ': </span>';
+			$html_output .= '<span class="mbs_toc_item_posts_name">' . mbds_display_posts_name( $mbds_story, $each_post['ID'] , true ) . ' </span>';
 		}
 		//jmihalik customization - remove story title from links
 		$html_output .= '<span class="mbs_toc_item_title">'; 

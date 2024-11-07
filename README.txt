@@ -3,8 +3,8 @@ Contributors: mooberrydreams, jmiha
 Donate link: http://www.mooberrydreams.com/products/mooberry-story
 Tags: author, authors, writer, writers, story, creative writing, fiction, serial, book
 Requires at least: 3.8.0
-Tested up to: 5.6.0
-Stable tag: 1.6.3
+Tested up to: 5.9
+Stable tag: 1.8.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,29 @@ If you have stories you've already posted on your blog, you can still use Moober
 6. Two widgets and multiple options allow you to highlight stories on your sidebar so readers can find them easily.
 
 == Changelog ==
+= 1.8.5 =
+* Allow stories to be archived and hidden
+* Pulled in upstream changes back to 1.7
+  * Fixed: Allow scheduled chapters
+
+= 1.8.4 =
+* Fixed: CMB2 file capitalization error preventing Mooberry Story from working without Mooberry Book Manager
+
+= 1.8.3 =
+* Fixed: CMB2 file capitalization error preventing Mooberry Story from working without Mooberry Book Manager
+
+= 1.8.1 =
+* Fixed: Fixed bug not allowing chapters to be reordered
+
+= 1.8 =
+* Added: Allow individual chapters to exclude prepended name (chapters, etc.)
+
+= 1.7.1 =
+* Fixed: fixed introduced bug that was affecting Mooberry Story and Mooberry Book Manager
+
+= 1.7 =
+* Updated: updated CMB2 library for PHP8/WP5.9 compatibility
+
 = 1.6.3 =
 * Synced upstream changes from the original project:
   * Updated: added story post content to TOC page to be compatible with Elementor
